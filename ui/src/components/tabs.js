@@ -18,7 +18,7 @@ const Tabs = React.memo(() => {
 								.map(tab => (
 									<li className="nav-item" key={tab.path}>
 										<a
-											className={`nav-link ${tab.path === path ? "active" : ""}`}
+											className={`nav-link ${tab.path === path ? "active not-clickable" : ""}`}
 											href={tab.path}
 											onClick={
 												tab.path === path ? (e) => { e.preventDefault(); } : (e) => {
@@ -35,6 +35,24 @@ const Tabs = React.memo(() => {
 									</li>
 								))
 						}
+						<li className="nav-item">
+							<a
+								className={`nav-link`}
+								href="map"
+								data-toggle="modal"
+								data-target="#poi-map"
+								onClick={
+									e => {
+										e.preventDefault();
+									}
+								}
+							>
+								Map
+							</a>
+						</li>
+						<li className="nav-item">
+							<a className="nav-link" disabled><small>20 requests allowed per second per ip</small></a>
+						</li>
 					</ul>
 				) : (
 						<button
@@ -42,7 +60,7 @@ const Tabs = React.memo(() => {
 							className="btn btn-link"
 							onClick={() => window.location.reload(true)}
 						>
-							Resend your request
+							Reload
 						</button>
 					)
 			}

@@ -38,36 +38,15 @@ export const format = {
 
 export const stateKey = path => path.replace(/^\//, "").replace(/\//g, "_");
 
-export const enterView = (viewId, data) => {
-  if (!viewId || !data.length) {
-    return;
-  }
-  document.querySelector(`#${viewId}`).scrollIntoView();
-};
-
 export const fuzzySearch = (fuzzyInput, fuzzyWords) =>
   fuzzyWords
     .filter(fuzzyWord => Reflect.apply(fuzzyWord.fuzzyIsFound, null, [fuzzyInput]));
 
 export const highLightSearchRows = id => {
-  const rows = document.querySelectorAll(`div[data-poi-id]`);
-  let firstRow = null;
-  if (rows) {
-    rows
-      .forEach(row => {
-        if (row.dataset.poiId === "" + id && !row.classList.contains(highLightClass)) {
-          row.classList.add(highLightClass);
-          if (firstRow === null) {
-            firstRow = row;
-          }
-        } else {
-          row.classList.remove(highLightClass);
-        }
-      });
-  }
-  if (firstRow) {
-    firstRow.scrollIntoView();
-  }
+  document.querySelectorAll(`div[data-poi-id]`)
+    .forEach(row => {
+      (row.dataset.poiId === "" + id && !row.classList.contains(highLightClass)) ? row.classList.add(highLightClass) : row.classList.remove(highLightClass);
+    });
 };
 
 export const loadTableRows = (data, pois, loadStartIndex, highlight, domNode) => {

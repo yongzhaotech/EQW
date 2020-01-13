@@ -2,7 +2,7 @@
 
 const store = new Map(),
 	cacheTime = 60000, /** 1 minute */
-	requestPerCacheTime = 10, /** 10 requests allowed in one minute per ip address */
+	requestPerCacheTime = 20, /** number of requests allowed in one minute per ip address */
 	clear = () => {
 		store.clear();
 	},

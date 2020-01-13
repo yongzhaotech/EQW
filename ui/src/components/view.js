@@ -7,6 +7,7 @@ import POIChart from "./poiChart";
 import DataTable from "./dataTable";
 import Error from "./error";
 import Tabs from "./tabs";
+import Map from "./map";
 import "../style/scroll.css";
 
 const View = () => {
@@ -121,7 +122,7 @@ const View = () => {
 								onClick={
 									() => {
 										dispatch(actions.loadMore(loadStartIndex + utils.rowsOfEachLoad));
-										utils.loadTableRows(data, loadStartIndex + utils.rowsOfEachLoad, highlight, tableRef.current);
+										utils.loadTableRows(data, pois, loadStartIndex + utils.rowsOfEachLoad, highlight, tableRef.current);
 									}}
 							>
 								{allRowsAreRendered ? `All ${size} rows have been loaded` : `Load more (${remainingRows} remaining)...`}
@@ -132,6 +133,7 @@ const View = () => {
 					</React.Fragment >
 				)
 			}
+			<Map data={data} />
 		</React.Fragment>
 	);
 };

@@ -35,10 +35,6 @@ const DetailView = React.memo(() => {
   chartCalculator.max_impressions = chartCalculator.impressions.length ? chartCalculator.impressions[chartCalculator.impressions.length - 1].impressions : 0;
   chartCalculator.max_revenue = chartCalculator.revenue.length ? chartCalculator.revenue[chartCalculator.revenue.length - 1].revenue : 0;
 
-  React.useEffect(() => {
-    utils.enterView(viewId, data);
-  });
-
   return data.length ? (
     <React.Fragment>
       {
