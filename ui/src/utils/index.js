@@ -36,7 +36,7 @@ export const format = {
   revenue: arg => Math.round(arg)
 };
 
-export const stateKey = path => path.replace(/^\//, "").replace(/\//g, "_");
+export const stateKey = path => (path || "").replace(/^\//, "").replace(/\//g, "_");
 
 export const fuzzySearch = (fuzzyInput, fuzzyWords) =>
   fuzzyWords
@@ -76,6 +76,9 @@ export const isControlColumn = key => /^date|hour$/i.test(key);
 
 export const ignore = key => /^poi_id|lat|lon$/i.test(key);
 
+export const isIntereted = key =>
+  ["events", "impressions", "clicks", "revenue"].indexOf(key.toLowerCase()) >= 0;
+
 /*
  * @description non-memoized selector to select simple state items from redux store state
  * @param {state} state the only arguement implicitly passed in by redux useSelector hook
@@ -103,7 +106,9 @@ export const selectPOIs = createSelector(
           clicks: +cur.clicks + +acc[cur.poi_id].clicks,
           revenue: +cur.revenue + +acc[cur.poi_id].revenue,
           name: cur.name,
-          poi_id: cur.poi_id
+          poi_id: cur.poi_id,
+          lat: cur.lat,
+          lon: cur.lon
         }
       }) : ({
         ...acc,
@@ -112,7 +117,9 @@ export const selectPOIs = createSelector(
           clicks: +cur.clicks,
           revenue: +cur.revenue,
           name: cur.name,
-          poi_id: cur.poi_id
+          poi_id: cur.poi_id,
+          lat: cur.lat,
+          lon: cur.lon
         }
       }), {})
 );
@@ -134,4 +141,12 @@ export const buildFuzzyWords = createSelector(
       text: row.name,
       id: row.poi_id
     }))
+);
+
+export const selectInterestCounts = (stateKey, interest, pois) => createSelector(
+  selectData(stateKey),
+  data => data
+    .reduce((acc, cur) => {
+
+    }, [])
 );

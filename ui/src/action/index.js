@@ -8,6 +8,7 @@ export const SET_HIGHLIGHT = "SET_HIGHLIGHT";
 export const SET_FUZZY_INPUT = "SET_FUZZY_INPUT";
 export const SET_LOADING_INDICATOR = "SET_LOADING_INDICATOR";
 export const LOAD_MORE_ROWS = "LOAD_MORE_ROWS";
+export const SET_INTEREST = "SET_INTEREST";
 
 /*
  * @description action creators
@@ -69,4 +70,9 @@ export const loadMoreByPath = (stateKey, index) => ({
 export const loadMoreChartByPath = (stateKey, index) => ({
   type: `chart_more_rows_${stateKey}`,
   index
+});
+
+export const setInterest = interest => ({
+  type: SET_INTEREST,
+  interest
 });

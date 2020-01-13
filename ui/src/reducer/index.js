@@ -192,6 +192,15 @@ const chart_start_index_events_hourly = (state = 0, action) => {
   }
 };
 
+const interest = (state = "", action) => {
+  switch (action.type) {
+    case action.SET_INTEREST:
+      return action.interest;
+    default:
+      return state;
+  }
+}
+
 const RootReducer = combineReducers({
   error,
   everything,
@@ -205,6 +214,7 @@ const RootReducer = combineReducers({
   highlight,
   fuzzy_input,
   is_loading,
+  interest,
   load_start_index,
   load_start_index_stats_daily,
   load_start_index_stats_hourly,

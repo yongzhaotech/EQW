@@ -34,32 +34,7 @@ body {overflow-y:scroll;}
   max-width: 50%;
 }
 
-.poi-map {
-  display: flex;
-  display: -webkit-flex;
-  justify-content: flex-start;
-  -webkit-justify-content: flex-start;
-  flex-wrap: wrap;
-}
-
-.poi-map div {
-  width: 10px;;
-  height: 10px;
-  margin: 1px;
-}
-
-.poi-1 {
-  background-color: #dc3545;
-}
-
-.poi-2 {
-  background-color: #007bff;
-}
-
-.poi-3 {
-  background-color: #ffc107;
-}
-
-.poi-4 {
-  background-color: #17a2b8;
+#indensity-map {
+  min-height: 500px !important;
+  min-width: 100%;
 }
