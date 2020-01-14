@@ -63,8 +63,6 @@ const Tabs = React.memo(() => {
             <button
               type="button"
               className="btn btn-link"
-              data-toggle="modal"
-              data-target="#poi-map"
               onClick={() => window.location.reload(true)}
             >
               Reload
