@@ -37,3 +37,7 @@ body {overflow-y:scroll;}
   min-height: 80vh !important;
   min-width: 100%;
 }
+
+input {
+  width: 400px !important;
+}

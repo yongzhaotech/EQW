@@ -43,8 +43,8 @@ const View = () => {
             </div >
             <React.Fragment>
               <div className="form-group row mt-3 mb-2">
-                <label className="col-5 col-form-label">Enter part of a poi name to search <small>(minimum two characters, e.g. <strong>or</strong>):</small></label>
-                <div className="col-2">
+                <label className="col-12 col-form-label">Enter part of a poi name to search (minimum two characters, e.g. <strong>or</strong>):</label>
+                <div className="col-12">
                   <input
                     className="form-control"
                     maxLength={20}
@@ -60,7 +60,7 @@ const View = () => {
                 </div>
                 {
                   fuzzy.length > 0 && (
-                    <div className="col-5 px-0">
+                    <div className="col-12 px-3">
                       <button type="button" className="btn btn-link p-0" disabled style={{ opacity: 1, color: "#000000" }}>
                         <small>Do you mean?</small>
                       </button>
