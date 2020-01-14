@@ -21,9 +21,9 @@ B. cd to node directory:
 1. `npm i` to install required npm packages for Node server
 
 2. start the node server using one of the following three commands:
-	`npm run start` or
-	`npm run dev` or
-	`pm2 start service.js` (if pm2 is available, run the server permanently)
+	1). `npm run start` or
+	2). `npm run dev` or
+	3). `pm2 start service.js` (if pm2 is available, run the server permanently)
 	
 	keep the server running
 	
@@ -31,7 +31,7 @@ B. cd to node directory:
 C. cd to ui directory:
 
 1. `npm i` to install required npm packages for React
-	`npm run start`
+2. `npm run start`
 	
 After the React web app runs, point the browser to localhost:3000
 	
