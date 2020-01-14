@@ -28,6 +28,7 @@ const Tabs = React.memo(() => {
                           dispatch(actions.fetchData(tab.path));
                           dispatch(actions.loadMoreByPath(utils.stateKey(tab.path), 0)); /** reduce row loading headache */
                           dispatch(actions.loadMoreChartByPath(utils.stateKey(tab.path), 0)); /** reduce row loading headache */
+                          dispatch(actions.heatMap());
                         }
                       }
                     >
@@ -39,18 +40,20 @@ const Tabs = React.memo(() => {
             <li className="nav-item">
               <a
                 className={`nav-link ${enableMap ? "" : "not-clickable"}`}
-                href="map"
+                href={enableMap ? "map" : null}
                 disabled={!enableMap}
+                title={enableMap ? null : "select a source to enable the map"}
                 data-toggle="modal"
                 data-target="#poi-map"
                 onClick={
                   e => {
                     e.preventDefault();
+                    dispatch(actions.heatMap(true));
                   }
                 }
               >
-                {enableMap ? `${utils.getTabLabel(path)} ` : ""}Map
-							</a>
+                <i>{enableMap ? `${utils.getTabLabel(path)} ` : ""}</i>Map
+              </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" disabled><small>20 requests allowed per second per ip</small></a>
@@ -62,7 +65,7 @@ const Tabs = React.memo(() => {
               className="btn btn-link"
               data-toggle="modal"
               data-target="#poi-map"
-              onClick={() => { }}//window.location.reload(true)}
+              onClick={() => window.location.reload(true)}
             >
               Reload
 						</button>

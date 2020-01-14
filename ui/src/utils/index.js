@@ -94,59 +94,162 @@ export const selectHighlight = state => state.highlight || null;
 /*
  * @description memoized selectors to read items from the state
  *  if arguments are not changed, cached result is returned instead of re-calculation
+ *  performance wins
  */
 export const selectPOIs = createSelector(
   selectData("everything"),
-  data => data
-    .reduce((acc, cur) =>
-      Reflect.has(acc, cur.poi_id) ? ({
-        ...acc,
-        [cur.poi_id]: {
-          impressions: +cur.impressions + +acc[cur.poi_id].impressions,
-          clicks: +cur.clicks + +acc[cur.poi_id].clicks,
-          revenue: +cur.revenue + +acc[cur.poi_id].revenue,
-          name: cur.name,
-          poi_id: cur.poi_id,
-          lat: cur.lat,
-          lon: cur.lon
-        }
-      }) : ({
-        ...acc,
-        [cur.poi_id]: {
-          impressions: +cur.impressions,
-          clicks: +cur.clicks,
-          revenue: +cur.revenue,
-          name: cur.name,
-          poi_id: cur.poi_id,
-          lat: cur.lat,
-          lon: cur.lon
-        }
-      }), {})
+  data =>
+    data
+      .reduce((acc, cur) =>
+        Reflect.has(acc, cur.poi_id) ? ({
+          ...acc,
+          [cur.poi_id]: {
+            impressions: +cur.impressions + +acc[cur.poi_id].impressions,
+            clicks: +cur.clicks + +acc[cur.poi_id].clicks,
+            revenue: +cur.revenue + +acc[cur.poi_id].revenue,
+            name: cur.name,
+            poi_id: cur.poi_id,
+            lat: cur.lat,
+            lon: cur.lon
+          }
+        }) : ({
+          ...acc,
+          [cur.poi_id]: {
+            impressions: +cur.impressions,
+            clicks: +cur.clicks,
+            revenue: +cur.revenue,
+            name: cur.name,
+            poi_id: cur.poi_id,
+            lat: cur.lat,
+            lon: cur.lon
+          }
+        }), {})
 );
 
 export const selectStatsPOI = createSelector(
   selectPOIs,
-  pois => Object.keys(pois)
-    .map(key => pois[key])
+  pois =>
+    Object.keys(pois)
+      .map(key => pois[key])
 );
 
 export const buildFuzzyWords = createSelector(
   selectStatsPOI,
-  data => data
-    .map(row => ({
-      fuzzyIsFound: fuzzyInput => {
-        const input = fuzzyInput.replace(/ /g, "");
-        return input.length >= 2 && (new RegExp(Array.from(input).join(".*"), "i")).test(row.name);
-      },
-      text: row.name,
-      id: row.poi_id
-    }))
+  data =>
+    data
+      .map(row => ({
+        fuzzyIsFound: fuzzyInput => {
+          const input = fuzzyInput.replace(/ /g, "");
+          return input.length >= 2 && (new RegExp(Array.from(input).join(".*"), "i")).test(row.name);
+        },
+        text: row.name,
+        id: row.poi_id
+      }))
 );
 
-export const selectInterestCounts = (stateKey, interest, pois) => createSelector(
+export const selectInterestCounts = (stateKey, pois) => createSelector(
   selectData(stateKey),
-  data => data
-    .reduce((acc, cur) => {
+  data => {
+    const counts = data
+      .reduce((acc, cur) =>
+        Reflect.has(acc, cur.poi_id) ? ({
+          ...acc,
+          [cur.poi_id]: {
+            impressions: +cur.impressions || 0 + +acc[cur.poi_id].impressions,
+            clicks: +cur.clicks || 0 + +acc[cur.poi_id].clicks,
+            revenue: +cur.revenue || 0 + +acc[cur.poi_id].revenue,
+            events: +cur.events || 0 + +acc[cur.poi_id].events
+          }
+        }) : ({
+          ...acc,
+          [cur.poi_id]: {
+            impressions: +cur.impressions || 0,
+            clicks: +cur.clicks || 0,
+            revenue: +cur.revenue || 0,
+            events: +cur.events || 0
+          }
+        }), {});
 
-    }, [])
+    return Object.keys(counts)
+      .map(poi_id => ({
+        ...counts[poi_id],
+        revenue: Math.round(counts[poi_id].revenue),
+        lat: pois[poi_id].lat,
+        lon: pois[poi_id].lon,
+        poi_id: poi_id
+      }));
+  }
+);
+
+export const _selectInterestCountsByDate = (stateKey) => createSelector(
+  selectData(stateKey),
+  data =>
+    data
+      .reduce((acc, cur) =>
+        Reflect.has(acc, cur.date) ? ({
+          ...acc,
+          [cur.date]: {
+            [cur.poi_id]: Reflect.has(acc[cur.date], cur.poi_id) ? {
+              impressions: +cur.impressions || 0 + +acc[cur.date][cur.poi_id].impressions,
+              clicks: +cur.clicks || 0 + +acc[cur.date][cur.poi_id].clicks,
+              revenue: +cur.revenue || 0 + +acc[cur.date][cur.poi_id].revenue,
+              events: +cur.events || 0 + +acc[cur.date][cur.poi_id].events
+            } : {
+                impressions: +cur.impressions || 0,
+                clicks: +cur.clicks || 0,
+                revenue: +cur.revenue || 0,
+                events: +cur.events || 0
+              }
+          }
+        }) : ({
+          ...acc,
+          [cur.date]: {
+            [cur.poi_id]: {
+              impressions: +cur.impression || 0,
+              clicks: +cur.clicks || 0,
+              revenue: +cur.revenue || 0,
+              events: +cur.events || 0
+            }
+          }
+        }), {})
+);
+
+export const selectInterestCountsByDate = (stateKey) => createSelector(
+  selectData(stateKey),
+  data => {
+    const dates = data
+      .reduce((acc, cur) =>
+        Reflect.has(acc, cur.date) ? ({
+          ...acc, [cur.date]: [
+            ...acc[cur.date], cur
+          ]
+        }) : ({
+          ...acc,
+          [cur.date]: [cur]
+        }), {});
+
+    return Object.keys(dates)
+      .reduce((acc, date) => ({
+        ...acc,
+        [date]: dates[date]
+          .reduce((acc, cur) =>
+            Reflect.has(acc, cur.poi_id) ? ({
+              ...acc,
+              [cur.poi_id]: {
+                impressions: +cur.impressions || 0 + +acc[cur.poi_id].impressions,
+                clicks: +cur.clicks || 0 + +acc[cur.poi_id].clicks,
+                revenue: +cur.revenue || 0 + +acc[cur.poi_id].revenue,
+                events: +cur.events || 0 + +acc[cur.poi_id].events
+              }
+            }) : ({
+              ...acc,
+              [cur.poi_id]: {
+                impressions: +cur.impressions || 0,
+                clicks: +cur.clicks || 0,
+                revenue: +cur.revenue || 0,
+                events: +cur.events || 0
+              }
+            }), {})
+      }), {});
+  }
 );

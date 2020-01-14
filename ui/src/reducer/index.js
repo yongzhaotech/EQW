@@ -194,12 +194,30 @@ const chart_start_index_events_hourly = (state = 0, action) => {
 
 const interest = (state = "", action) => {
   switch (action.type) {
-    case action.SET_INTEREST:
+    case actions.SET_INTEREST:
       return action.interest;
     default:
       return state;
   }
+};
+
+const date = (state = "", action) => {
+  switch (action.type) {
+    case actions.SET_INTEREST_DATE:
+      return action.date;
+    default:
+      return state;
+  }
 }
+
+const heatmap = (state = false, action) => {
+  switch (action.type) {
+    case actions.HEAT_MAP:
+      return action.render;
+    default:
+      return state;
+  }
+};
 
 const RootReducer = combineReducers({
   error,
@@ -215,6 +233,8 @@ const RootReducer = combineReducers({
   fuzzy_input,
   is_loading,
   interest,
+  date,
+  heatmap,
   load_start_index,
   load_start_index_stats_daily,
   load_start_index_stats_hourly,

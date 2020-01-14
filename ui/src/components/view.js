@@ -134,7 +134,7 @@ const View = () => {
           </React.Fragment >
         )
       }
-      {path && pathData.length && < Map data={pathData} pois={pois} />}
+      {(path && pathData.length) && < Map data={pathData} pois={pois} />}
     </React.Fragment>
   );
 };

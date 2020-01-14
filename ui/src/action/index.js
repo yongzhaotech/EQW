@@ -9,6 +9,8 @@ export const SET_FUZZY_INPUT = "SET_FUZZY_INPUT";
 export const SET_LOADING_INDICATOR = "SET_LOADING_INDICATOR";
 export const LOAD_MORE_ROWS = "LOAD_MORE_ROWS";
 export const SET_INTEREST = "SET_INTEREST";
+export const HEAT_MAP = "HEAT_MAP";
+export const SET_INTEREST_DATE = "SET_INTEREST_DATE";
 
 /*
  * @description action creators
@@ -75,4 +77,14 @@ export const loadMoreChartByPath = (stateKey, index) => ({
 export const setInterest = interest => ({
   type: SET_INTEREST,
   interest
+});
+
+export const setInterestDate = date => ({
+  type: SET_INTEREST_DATE,
+  date
+})
+
+export const heatMap = (render = false) => ({
+  type: HEAT_MAP,
+  render
 });

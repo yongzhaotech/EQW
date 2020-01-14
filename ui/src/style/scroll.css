@@ -29,12 +29,11 @@ body {overflow-y:scroll;}
   cursor: not-allowed;
 }
 
-
 .modal-dialog {
-  max-width: 50%;
+  max-width: 90vw;
 }
 
 #indensity-map {
-  min-height: 500px !important;
+  min-height: 80vh !important;
   min-width: 100%;
 }
