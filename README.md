@@ -35,5 +35,6 @@ C. cd to ui directory:
 	
 After the React web app runs, point the browser to localhost:3000
 	
+Production URL: http://esaleshome.com/ads/eq.html
 
 Author: Yong Zhao, laoyezhao@yahoo.ca, 4168283689
