@@ -29,6 +29,8 @@ const Tabs = React.memo(() => {
                           dispatch(actions.loadMoreByPath(utils.stateKey(tab.path), 0)); /** reduce row loading headache */
                           dispatch(actions.loadMoreChartByPath(utils.stateKey(tab.path), 0)); /** reduce row loading headache */
                           dispatch(actions.heatMap());
+                          dispatch(actions.setInterestDate());
+                          dispatch(actions.setInterestHour())
                         }
                       }
                     >
@@ -63,8 +65,6 @@ const Tabs = React.memo(() => {
             <button
               type="button"
               className="btn btn-link"
-              data-toggle="modal"
-              data-target="#poi-map"
               onClick={() => window.location.reload(true)}
             >
               Reload

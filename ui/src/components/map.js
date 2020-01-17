@@ -15,7 +15,9 @@ const Map = React.memo(({ data, pois }) => {
       .filter(key => utils.isIntereted(key)),
     interest = useSelector(state => state.interest),
     dates = Object.keys(interestedCountsByDate),
-    date = useSelector(state => state.date);
+    date = useSelector(state => state.date),
+    hours = useSelector(utils.selectInterestCountsByDateHour(utils.stateKey(path), date)),
+    hour = useSelector(state => state.hour);
 
   React.useEffect(() => {
     if (interests.indexOf(interest) < 0) {
@@ -34,9 +36,24 @@ const Map = React.memo(({ data, pois }) => {
         }),
         heatmap = new google.maps.visualization.HeatmapLayer({
           data: interestedCounts.map(point => {
+            let location = new google.maps.LatLng(point.lat, point.lon),
+              weight = 0;
+            if (date) {
+              if (hour !== "") {
+                const row = hours.find(row => row.poi_id === +point.poi_id && row.hour === +hour);
+
+                if (!!row) {
+                  weight = row[interest];
+                }
+              } else if (interestedCountsByDate[date][point.poi_id]) {
+                weight = interestedCountsByDate[date][point.poi_id][interest];
+              }
+            } else {
+              weight = point[interest];
+            }
             return {
-              location: new google.maps.LatLng(point.lat, point.lon),
-              weight: date ? (interestedCountsByDate[date][point.poi_id] ? interestedCountsByDate[date][point.poi_id][interest] : 0) : point[interest]
+              location,
+              weight
             }
           })
         });
@@ -62,7 +79,9 @@ const Map = React.memo(({ data, pois }) => {
                         className="form-control"
                         value={interest}
                         onChange={e => {
-                          dispatch(actions.setInterest(e.target.value))
+                          dispatch(actions.setInterest(e.target.value));
+                          dispatch(actions.setInterestDate());
+                          dispatch(actions.setInterestHour())
                         }}
                       >
                         {
@@ -78,7 +97,8 @@ const Map = React.memo(({ data, pois }) => {
                   className="form-control mt-1"
                   value={date}
                   onChange={e => {
-                    dispatch(actions.setInterestDate(e.target.value))
+                    dispatch(actions.setInterestDate(e.target.value));
+                    dispatch(actions.setInterestHour())
                   }}
                 >
                   <option value="">Select a date...</option>
@@ -89,6 +109,25 @@ const Map = React.memo(({ data, pois }) => {
                       ))
                   }
                 </select>
+                {
+                  hours.length > 0 && (
+                    <select
+                      className="form-control mt-1"
+                      value={hour}
+                      onChange={e => {
+                        dispatch(actions.setInterestHour(e.target.value))
+                      }}
+                    >
+                      <option value="">Select an hour...</option>
+                      {
+                        hours
+                          .map((hourRow, index) => (
+                            <option key={index} value={hourRow.hour}>{hourRow.hour}</option>
+                          ))
+                      }
+                    </select>
+                  )
+                }
               </div>
             </div>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">

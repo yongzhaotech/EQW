@@ -208,7 +208,16 @@ const date = (state = "", action) => {
     default:
       return state;
   }
-}
+};
+
+const hour = (state = "", action) => {
+  switch (action.type) {
+    case actions.SET_INTEREST_HOUR:
+      return action.hour;
+    default:
+      return state;
+  }
+};
 
 const heatmap = (state = false, action) => {
   switch (action.type) {
@@ -234,6 +243,7 @@ const RootReducer = combineReducers({
   is_loading,
   interest,
   date,
+  hour,
   heatmap,
   load_start_index,
   load_start_index_stats_daily,

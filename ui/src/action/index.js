@@ -11,6 +11,7 @@ export const LOAD_MORE_ROWS = "LOAD_MORE_ROWS";
 export const SET_INTEREST = "SET_INTEREST";
 export const HEAT_MAP = "HEAT_MAP";
 export const SET_INTEREST_DATE = "SET_INTEREST_DATE";
+export const SET_INTEREST_HOUR = "SET_INTEREST_HOUR";
 
 /*
  * @description action creators
@@ -79,10 +80,15 @@ export const setInterest = interest => ({
   interest
 });
 
-export const setInterestDate = date => ({
+export const setInterestDate = (date = "") => ({
   type: SET_INTEREST_DATE,
   date
-})
+});
+
+export const setInterestHour = (hour = "") => ({
+  type: SET_INTEREST_HOUR,
+  hour
+});
 
 export const heatMap = (render = false) => ({
   type: HEAT_MAP,

@@ -181,37 +181,11 @@ export const selectInterestCounts = (stateKey, pois) => createSelector(
   }
 );
 
-export const _selectInterestCountsByDate = (stateKey) => createSelector(
+export const selectInterestCountsByDateHour = (stateKey, date) => createSelector(
   selectData(stateKey),
   data =>
     data
-      .reduce((acc, cur) =>
-        Reflect.has(acc, cur.date) ? ({
-          ...acc,
-          [cur.date]: {
-            [cur.poi_id]: Reflect.has(acc[cur.date], cur.poi_id) ? {
-              impressions: +cur.impressions || 0 + +acc[cur.date][cur.poi_id].impressions,
-              clicks: +cur.clicks || 0 + +acc[cur.date][cur.poi_id].clicks,
-              revenue: +cur.revenue || 0 + +acc[cur.date][cur.poi_id].revenue,
-              events: +cur.events || 0 + +acc[cur.date][cur.poi_id].events
-            } : {
-                impressions: +cur.impressions || 0,
-                clicks: +cur.clicks || 0,
-                revenue: +cur.revenue || 0,
-                events: +cur.events || 0
-              }
-          }
-        }) : ({
-          ...acc,
-          [cur.date]: {
-            [cur.poi_id]: {
-              impressions: +cur.impression || 0,
-              clicks: +cur.clicks || 0,
-              revenue: +cur.revenue || 0,
-              events: +cur.events || 0
-            }
-          }
-        }), {})
+      .filter(data => typeof data.hour !== "undefined" && data.date === date)
 );
 
 export const selectInterestCountsByDate = (stateKey) => createSelector(
